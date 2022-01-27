@@ -15,5 +15,19 @@ taskapp和rpcapi03中定义每个具体业务的实现
 
 ### config_mgr
 周期性地检查控制台配置的策略是否发生变化，如果策略发生变化，将请求控制台获取变化的策略，然后添加上topic，发送给nsqd
+获取的常用策略如下
+`access_1x_conf`
+
+`web_auth_conf`
+
+`client_audit` 表`client_mac_approved`存储设备审核目录下所有具有mac地址的设备；表`client_ip_approved` 存储设备审核中所有具有IP地址的设备
+
+`client` 表`client_info`存储所有具有ip地址的设备；client_info_mac 存储所有具有MAC地址的设备
+
+`userlist`
+
+
+
+
 
 
