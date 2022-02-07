@@ -103,6 +103,15 @@ Request Authenticator的值是一个随机数，不会重复，Response Authenti
 |25|	EAP-PEAP|	
 |26|	EAP-MSCHAPv2|
 
+### EAP-MD5
+其缺点如下：
+**单向认证**：只有请求方被认证，服务器不需要被认证
+
+**用户名明文**：请求方的用户名总是明文。
+
+**弱MD哈希**：请求方密码使用MD5哈希，容易被破解。
+
+
 
 
 ![eap协议类型比较](eap协议类型比较.png)
@@ -127,7 +136,7 @@ Protocol Version：表示EAPOL帧的发送方所支持的协议版本号。
 Type：表示EAPOL数据帧类型。
 
 |类型|	说明|
-|---|---|
+|-------------    | ---|
 |EAP-Packet(0x00)| 	认证信息帧，用于承载认证信息，该帧在接入端重新封装并承载于RADIUS协议上，发往认证服务器|
 |EAPOL-Start(0x01)|	认证发起帧|
 |EAPOL-Logoff(0x02)|	退出请求帧|
