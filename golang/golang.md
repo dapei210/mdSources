@@ -52,9 +52,43 @@ fmt.Println(strings.Contains("hello golang","go"))
 
 `func Join(a []string, sep string) string`
 
+### 类型(model)
+
+1. 两种不同类型的整型数是不能直接比较
+
+2. 小写字母开头的函数只在本包中可见，大写字母开头的函数才能被其他包使用，也适用于类型和变量的可见性
+
+3. 未进行显式初始化的变量都会被初始化为该类型的零值
+
+
+4. 初始化某类型的对象实例几种方法如下：
+```
+type Rect struct {
+    x, y          float64
+    width, height float64
+    
+    
+}
+
+rect1 := new(Rect)
+rect2 := &Rect{}
+rect3 := &Rect{0,0,100,200}
+rect4 := &Rect{width:100, height:200}
+```
+Go中，没有构造函数，对象的创建通常由一个全局的创建函数来完成，以New****来命名，表示“构造函数”
+
+```
+func NewRect(x,y,width,height float64) *Rect {
+    return &Rect{x,y,width,height}
+    
+}
+```
+
 
 ### interface类型
 interface定义了一组方法，如果某个对象实现了某个接口的所有方法，则此对象就实现了此接口。
+
+[接口用例](https://zhuanlan.zhihu.com/p/30625125)
 
 ```
 type Human struct {
@@ -163,6 +197,52 @@ a = i
 a = s
 ```
 
+### 占位符
+```
+type tests struct {
+    content string
+    
+}
+
+words := tests{content:"hello golang"}
+```
+| 占位符 | 说明 | 举例  | 输出|
+|----|--- |---|---|
+| %v| 默认格式|Printf("%v",words) | {hello golang} |       |
+|%+v|打印结构时，添加字段名||{content:"hello golang"}|
+|||||
+|||||
+|||||
+|||||
+
+- 布尔占位符
+
+
+- 整数占位符
+
+| 占位符 | 说明 | 举例  | 输出|
+|----|--- |---|---|
+|%b|二进制|Printf("%b",5)|101|
+|%c|Unicode表示的字符|Printf("%c",0x4E2D)|中|
+|%d|十进制|Printf("%d",0x12)|18|
+|%q|单引号表示的字符字面值|Printf("%q",0x4E2D)|'中'|
+|%x, %X|十六进制表示|Printf("%x %X",10,10)|a A|
+|%U|Unicode格式，U+****,等同于U+%04X|Printf("%U",0x4E2D)|U+4E2D|
+
+- 字符串与字节切片
+
+| 占位符 | 说明 | 举例  | 输出|
+|----|--- |---|---|
+|%s|string或[]byte类型字符串输出|Printf("%s",[]byte("go语言"))|go语言|
+|%q|双引号字符串|Printf("%q","go语言")|"go语言"|
+|%x,%X|十六进制，每字节两个字符|Printf("%x %X","go","go")|676f 676F|
+
+- 指针
+
+| 占位符 | 说明 | 举例  | 输出|
+|----|--- |---|---|
+|%p|十六进制表示，前缀0x|Printf("%p",&words)|0x******|
+
 
 ### reflect
 要反射一个类型的值（这些值都实现了空interface），reflect三个步骤如下：
@@ -192,7 +272,13 @@ v.SetFloat(7.1)
 ```
 
 ### 并发
-goroutine是通过Go的runtime管理的一个线程管理器
+goroutine是通过Go的runtime管理的一个线程管理器,其特点如下：
+
+- 能够在单一的系统线程中模拟多个任务的并发执行
+- 被动的任务调度方式，当一个任务正在执行时，外部没有办法中止它。要进行任务切换，只能通过由该任务自身调用yield()来主动出让CPU使用权
+- 每个协程都有自己的堆栈和局部变量
+
+每个协程都包含三种运行状态：挂起、运行和停止
 
 #### channels
 goroutine运行在相同的地址空间，因此访问共享内存要做好同步。
@@ -255,4 +341,36 @@ func main() {
     }()
     <- ch
 }
+```
+
+
+### 文件操作
+```
+func Mkdir(name string, perm FileMode) error 
+
+func MkdirAll(path string,perm FileMode) error //根据path创建多级子目录
+
+func Remove(name string) error //当目录下有文件或者其他目录会报错
+
+func RemoveAll(path string) error//如果path是单个名称，那么该目录不删除
+
+func Create(name string)(file *File, err Error)//默认权限0666
+
+func NewFile(fd uintptr, name string) *File//根据文件描述符创建一个文件对象
+
+func OpenFile(name string, flag int, perm uint32)(file *File, err Error)
+
+
+//写文件操作
+func (file *File) Write(b []byte) (n int, err Error)
+
+func (file *File) WriteAt(b []byte, off int64) (n int, err Error)//在指定位置开始写入
+
+func (file *File) WriteStrintg(s string) (ret int, err Error)
+
+
+//读文件操作
+func (file *File) Read(b []byte) (n int, err Error)
+
+func (file *File) ReadAt(b []byte,off int64) (n int, err Error)
 ```

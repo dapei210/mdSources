@@ -46,3 +46,80 @@ func (f HandlerFunc) ServeHTTP(w ResponseWriter,r *Request) {
 
 }
 ```
+
+Go支持外部实现的路由器，ListenAndServe的第二个参数就是用以配置外部路由器的，它是一个Handler接口，即外部路由器只要实现了Handler接口就可以，可以在自己实现的路由器的ServeHTTP里面实现自定义路由功能。
+
+实现的简易路由器
+```
+package main
+
+import (
+    "fmt"
+    "net/http"
+
+)
+
+type MyMux struct {
+
+}
+
+func (p *MyMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+
+    if r.URL.Path == "/" {
+        sayHello(w,r)
+        return
+    }
+    http.NotFound(w,r)
+    return
+
+}
+
+func sayHello(w http.ResponseWriter, r *http.Request) {
+
+    fmt.Fprint(w,"hello myroute")
+
+}
+
+func main() {
+    mux := &MyMux{}
+    http.ListenAndServe(":9090",mux)
+
+}
+```
+
+#### 执行流程
+
+**首先调用Http.HandleFunc**
+
+1. 调用了DefaultServerMux的HandleFunc
+2. 调用了DefaultServerMux的Handle
+3. DefaultServeMux的map[string]muxEntry中增加对应的handler和路由规则
+
+**其次调用http.ListenAndServe()**
+
+4. 实例化Server
+5. 调用Server的ListenAndServe()
+6. 调用net.Listen("tcp",addr)监听端口
+7. 启动一个for循环，在循环体中Accept请求
+8. 对每个请求实例化一个Conn,并且启动一个goroutine为每个请求进行服务go c.serve()
+9. 读取每一个请求的内容w, err := c.readRequest()
+10. 判断handler是否为空，如果没有设置handler,handler就设置为DefaultServeMux
+11. 调用handler的ServeHttp
+`mux.handler(r).ServeHTTP(w,r)`
+
+
+
+### session和cookie
+
+
+### xml,json文本处理
+
+#### xml
+解析xml
+`func Unmarshal(data []byte, v interface{}) error`
+
+
+
+### 模板
+
+
