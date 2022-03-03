@@ -17,6 +17,24 @@ openssl 1.1.1c版本
 
 
 ### freeradius测试工具
+#### eapol_test工具
+
+集成域认证可以使用如下命令来模拟测试：
+eapol_test -c peap-mschapv2.conf -s testing123
+其中testing123为交换机接入点密钥；
+peap-mschapv2.conf文件内容为：
+network={
+    ssid="example"
+     key_mgmt=WPA-EAP
+     eap=PEAP
+     identity="ldaptest"
+     anonymous_identity="ldaptest"
+     password="123.com"
+    phase2="auth=MSCHAPV2"
+#
+# Uncomment the following to perform server certificate validation.
+# ca_cert="/etc/raddb/certs/ca.der"
+}
 
 
 ### freeradius源码分析
