@@ -31,10 +31,30 @@ network={
      anonymous_identity="ldaptest"
      password="123.com"
     phase2="auth=MSCHAPV2"
-#
-# Uncomment the following to perform server certificate validation.
-# ca_cert="/etc/raddb/certs/ca.der"
+
 }
+
+#### admin
+ radmin -d  /usr/local/etc/raddb  -e "debug level 4"
+
+#### radeapclient
+radeapclient -x 127.0.0.1 auth testing123 -f req.txt -m aaaaa -a 1 -d /usr/local/etc/raddb/
+
+-m: mid
+
+-a：0表示用户名和密码认证，1表示主机（mid）认证
+
+```
+User-Name = "testing"
+Cleartext-Password = "password"
+Calling-Station-Id = "aa:aa:aa:bb:bb:bb"
+EAP-Code = Response
+EAP-Id = 210
+EAP-Type-Identity = "testing"
+Message-Authenticator = 0x00
+NAS-IP-Address = 127.0.0.1
+NAS-Port = 10
+```
 
 
 ### freeradius源码分析
