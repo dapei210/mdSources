@@ -40,6 +40,14 @@ fmt.Println(string(s1))
 hello
 hello+golang
 ```
+
+
+### 运算符
+
+**`:=` 只能用于定义局部变量，不能用于定义全局变量**
+
+
+
 ### 字符串操作
 函数来自strings包
 
@@ -51,6 +59,41 @@ fmt.Println(strings.Contains("hello golang","go"))
 ```
 
 `func Join(a []string, sep string) string`
+
+### 数值类型和字符串类型之间的转换
+#### 数值类型转换字符串类型`strconv.Fromat***()`
+```
+strconv.FormatInt(int64(num),n)
+```
+#### 字符串类型转数值类型`strconv.Parse***()`
+#### 字符串类型和整型快速转换
+
+整型转换为字符串`strconv.Itoa(int(num1))`
+
+字符串类型转换为整型`strconv.Atoi(str)`
+
+数值类型转换字符串类型
+```
+//整型
+fmt.Sprintf("%d",num1)
+//float类型  
+fmt.Sprintf("%f",num2)
+//bool类型
+fmt.Sprintf("%t",num3)
+
+```
+
+
+### os包和flag包获取命令行参数
+
+
+
+`for...range`循环可以快速完成对字符串、数组、slice、map、channel遍历
+
+
+GO中引用类型有
+
+
 
 ### 类型(model)
 
