@@ -1,3 +1,62 @@
+### 类型
+布尔类型不能接受其他类型的赋值，不支持自动或强制的类型转换
+
+```
+//浮点数比较
+import "math"
+//p为用户自定义的比较精度，比如0.00001
+func IsEqual(f1,f2,p float64) bool {
+    return math.Fdim(f1,f2) < p
+
+
+}
+```
+
+字符串(string)的内容不能在初始化被修改
+
+```
+//字符串通过range遍历
+for i, v := range array {
+    fmt.Println("i v")
+
+}
+```
+
+**值类型**
+
+Go中数组是一个值类型。值类型变量在赋值和作为参数传递时都产生一次复制动作，所以在函数体中无法修改传入的数组的内容，因为函数内操作的只是所传入数组的一个副本。
+
+**数组切片**
+
+数组切片的数据结构抽象以下3个变量：
+1. 一个指向原生数组的指针；
+2. 数组切片中的元素个数；
+3. 数组切片已分配的存储空间
+
+创建数组切片：基于数组和直接创建
+
+基于数组----myArray[first:last]
+
+直接创建
+
+1. slice1 := make([]int, 5)
+2. slice2 := make([]int,5,10)//预留10个元素的存储空间
+3. slice3 := []int{1,2,3,4,5}
+
+数组切片内置cap()和len()函数，cap()返回的是数组切片分配的空间大小
+
+使用append()函数在尾端增加元素
+slice = append(slice,1,2,3)
+等同于
+slice2 := []int{1,2,3}
+slice = append(slice,slice2...)
+
+
+
+
+
+
+
 ### string 与 []byte
 [GO中[]byte和string转换](https://zhuanlan.zhihu.com/p/270626496)
 

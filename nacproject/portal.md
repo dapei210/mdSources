@@ -1,3 +1,6 @@
+[Protal认证原理描述](https://support.huawei.com/enterprise/zh/doc/EDOC1100176388/609549d8)
+
+
 ### 接入设备
 1. 认证之前，将用户所有的http/https请求都重定向到Portal Web服务器
 2. 认证过程中，与Portal认证服务器、AAA服务器交互，完成身份认证/授权/计费的功能
