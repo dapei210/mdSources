@@ -46,11 +46,52 @@ Go中数组是一个值类型。值类型变量在赋值和作为参数传递时
 数组切片内置cap()和len()函数，cap()返回的是数组切片分配的空间大小
 
 使用append()函数在尾端增加元素
-slice = append(slice,1,2,3)
+
+`slice = append(slice,1,2,3)`
+
 等同于
+```
 slice2 := []int{1,2,3}
 slice = append(slice,slice2...)
+```
+append函数追加数据时，如果追加之后没有超出切片的容量，那么返回原来的切片，如果超出了切片的容量，返回一个新的切片，每次给切片扩容都会按照原有切片容量*2的方式扩容
 
+
+和数组不同，切片只支持判断是否为nil,不支持==，!=判断
+
+切片声明后不能直接使用，只有通过make或语法糖创建之后才会开辟空间，才能使用
+
+字符串的底层是[]byte数组，所以字符串也支持切片的相关操作
+
+
+
+**map**
+1. 只要是可以做==、!=判断的数据类型都有可以作为key(数值，字符串，数组，指针，结构体，接口)
+2. map的key不能是slice， map , function
+3. map和切片一样容量都不是固定的，当容量不足时底层会自动扩容
+4. 通过ok-idiom模式判断指定键值对是否存储
+   ```
+   if value, ok :=dict["key1"]; ok {
+
+       fmt.Prinln("key1键值",value)
+   }
+
+   //遍历
+   for key, value := range dict {
+       fmt.Prinln(key,value)
+
+   }
+   ```
+
+
+**匿名属性**
+1. 没有指定属性名称，只有属性的类型，称之为匿名属性
+2. 任何有命名的数据类型都可以作为匿名属性(int,float,bool,string,struct等)
+
+
+**指针**
+1. golang的指针，不支持C语言中的+1 -1和++ --操作
+2. 切片的本质就是一个指针指向数组，所以指向切片的指针是一个二级指针
 
 
 
@@ -86,6 +127,8 @@ Abcd
 
 切片是共享内存的，即没有数据的复制
 copy在两个切片之间复制数据，复制长度以len小的为准
+
+copy第二个参数也可以是数组
 
 ```
 s1 := []byte("hello golang")
@@ -153,6 +196,34 @@ fmt.Sprintf("%t",num3)
 GO中引用类型有
 
 
+### 匿名函数以及闭包
+#### 匿名函数
+
+
+#### 闭包
+
+
+### init函数以及main函数
+golang有两个保留函数、
+
+1. init函数(能够用于所有的package)
+2. main函数(只能应用于package main)
+3. 这两个函数在定义时不能有任何的参数和返回值
+4. go程序会自动调用这两个函数，所以不能在任何地方调用这两个函数
+5. package main必须包含一个main函数，但是每个package中的init函数都是可选的
+6. 一个package可以写任意多个init函数，但是建议一个package中每个文件只写一个init函数
+7. 单个保重代码执行顺序
+```
+main包--->常量--->全局变量--->init函数--->main函数--->Exit
+```
+
+8. 多个包之间代码执行顺序
+   
+![多个包之间代码执行顺序](%E5%A4%9A%E4%B8%AA%E5%8C%85%E4%B9%8B%E9%97%B4%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F.png)
+
+9. init函数用于处理当前文件的初始化操作，在使用某个文件时的一些准备工作应该在这里完成
+
+
 
 ### 类型(model)
 
@@ -190,6 +261,79 @@ func NewRect(x,y,width,height float64) *Rect {
 ### interface类型
 interface定义了一组方法，如果某个对象实现了某个接口的所有方法，则此对象就实现了此接口。
 
+接口中只能有方法不能有字段
+
+接口中嵌入接口时不能出现相同的方法名称
+
+空接口类型可以接收任意类型数据
+
+只要是自定义类型就可以实现接口
+```
+
+```
+
+接口类型变量可以接收实现了该接口类型的变量，但是只能调用该变量中的方法，不能访问该变量的属性
+
+
+### 面向对象
+
+#### 继承
+golang中所谓的继承其实是利用组合实现的(匿名结构体属性)
+
+1. 子类不仅仅能够继承父类的属性，还能够继承父类的方法
+2. 无论是属性继承还是方法继承，都只能子类访问父类，不能父类访问子类
+
+#### 多态
+golang的多态是采用接口来实现的
+```
+package main
+
+import "fmt"
+//1.定义接口
+type Animal interface { 
+	Eat()
+}
+type Dog struct { 
+	name string 
+	age int
+}
+// 2.实现接口方法
+func (d Dog) Eat() { 
+	fmt.Println(d.name, "正在吃东西")
+}
+
+type Cat struct { 
+	name string 
+	age int
+}
+// 2.实现接口方法
+func (c Cat) Eat() { 
+	fmt.Println(c.name, "正在吃东西")
+}
+// 3.对象特有方法
+func (c Cat) Special() { 
+	fmt.Println(c.name, "特有方法")
+}
+
+
+func main() {
+// 1.利用接口类型保存实现了所有接口方法的对象var a Animal
+	a = Dog{"旺财", 18}
+// 2.利用接口类型调用对象中实现的方法a.Eat()
+	a = Cat{"喵喵", 18} a.Eat()
+// 3.利用接口类型调用对象特有的方法
+//a.Special() // 接口类型只能调用接口中声明的方法, 不能调用对象特有方法
+	if cat, ok := a.(Cat); ok{
+		cat.Special() // 只有对象本身才能调用对象的特有方法
+	}
+}
+
+
+```
+
+多态优点：
+1. 简化了编程接口，类与类之间重用
+
 [接口用例](https://zhuanlan.zhihu.com/p/30625125)
 
 ```
@@ -201,7 +345,7 @@ type Human struct {
 }
 
 type Student struct {
-    Human
+    Human    //匿名属性
     school   string
     loan     float32
 }
@@ -444,6 +588,12 @@ func main() {
     <- ch
 }
 ```
+
+### 方法
+1. golang中方法一般用于将函数和结构体绑定在一起，让结构体除了能够保存数据外还能具备某些行为
+
+
+
 
 
 ### 文件操作
