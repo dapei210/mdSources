@@ -73,12 +73,12 @@ append函数追加数据时，如果追加之后没有超出切片的容量，�
    ```
    if value, ok :=dict["key1"]; ok {
 
-       fmt.Prinln("key1键值",value)
+       fmt.Println("key1键值",value)
    }
 
    //遍历
    for key, value := range dict {
-       fmt.Prinln(key,value)
+       fmt.Println(key,value)
 
    }
    ```
@@ -152,19 +152,6 @@ hello+golang
 
 ### 字符串操作
 函数来自strings包
-#### 查找子串在字符串中出现的位置
-
-#### 查找字符串中是否包含子串
-
-#### 字符串比较
-
-#### 字符串转换
-
-#### 字符串拆分
-
-#### 字符串清理
-
-
 
 `func Contains(s, substr string) bool`
 如：
@@ -543,6 +530,12 @@ goroutine是通过Go的runtime管理的一个线程管理器,其特点如下：
 goroutine运行在相同的地址空间，因此访问共享内存要做好同步。
 默认情况下，channel接收和发送数据都是阻塞的(非缓存类型)，除非另一端已经准备好。
 Go也可以指定channel的缓冲大小 `ch := make(chan type, num)`
+channel是线程安全的，即自带锁定功能
+channel如果没有数据，再取就会报错；数据已满，再写就会报错
+
+1. 单独在主线程中操作管道，写满了会报错，没有数据获取也会报错
+2. 只要在协程中操作管道，写满了会阻塞，没有数据获取也会阻塞
+
 
 ```
 package main
