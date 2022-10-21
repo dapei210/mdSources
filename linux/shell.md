@@ -1,3 +1,26 @@
+### linux系统信息
+
+#### linux内核信息
+
+`cat /proc/version`
+
+`uname -r`
+
+`uname -a `
+
+#### linux版本信息
+
+`cat /etc/issue`
+
+`cat /etc/redhat-release`
+
+`file /bin/bash`
+
+`file /bin/cat`
+
+
+
+
 ### du命令
 查找根目录下最大目录/文件(包括子文件夹)
 

@@ -48,6 +48,7 @@ radeapclient -x 127.0.0.1 auth testing123 -f req.txt -m aaaaa -a 1 -d /usr/local
 User-Name = "testing"
 Cleartext-Password = "password"
 Calling-Station-Id = "aa:aa:aa:bb:bb:bb"
+Framed-IP-Address = 12.1.2.3
 EAP-Code = Response
 EAP-Id = 210
 EAP-Type-Identity = "testing"
