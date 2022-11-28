@@ -26,6 +26,8 @@ for i, v := range array {
 
 Go中数组是一个值类型。值类型变量在赋值和作为参数传递时都产生一次复制动作，所以在函数体中无法修改传入的数组的内容，因为函数内操作的只是所传入数组的一个副本。
 
+
+
 **数组切片**
 
 数组切片的数据结构抽象以下3个变量：
@@ -64,7 +66,6 @@ append函数追加数据时，如果追加之后没有超出切片的容量，�
 字符串的底层是[]byte数组，所以字符串也支持切片的相关操作
 
 
-
 **map**
 1. 只要是可以做==、!=判断的数据类型都有可以作为key(数值，字符串，数组，指针，结构体，接口)
 2. map的key不能是slice， map , function
@@ -87,11 +88,51 @@ append函数追加数据时，如果追加之后没有超出切片的容量，�
 **匿名属性**
 1. 没有指定属性名称，只有属性的类型，称之为匿名属性
 2. 任何有命名的数据类型都可以作为匿名属性(int,float,bool,string,struct等)
+3. 结构体未匿名属性，访问匿名属性的属性有两种方式：先找到匿名属性，再访问匿名属性中的属性，如stu.Person.name;直接访问匿名属性中的属性，
+   如果多个匿名属性名称相同，不能使用第二种方式
+
+```
+type attribute struct {
+    int
+    bool
+    float32
+
+}
+
+value := attribute{1,false,2.3}
+nextvalue := attribute{
+    int:1,
+    bool:false,
+    float32:2.3,
+}
+
+//结构体匿名属性
+type Person struct {
+    name string
+    age  int
+}
+type Student struct {
+    Person
+    class string
+}
+
+stu := Student{
+    Person{"sx",11},
+    "one",
+}
+```
+
+
 
 
 **指针**
 1. golang的指针，不支持C语言中的+1 -1和++ --操作
 2. 切片的本质就是一个指针指向数组，所以指向切片的指针是一个二级指针
+3. 创建结构体指针两种方式： &structname {}; new(structname).
+4. 使用结构体指针操作结构体属性：(*p).name; p.name
+5. 不能将函数内指向局部变量的指针作为返回值，函数结束指向的空间会被释放；可以将函数内局部变量作为返回值，本质是拷贝一份
+
+
 
 
 
@@ -153,14 +194,47 @@ hello+golang
 ### 字符串操作
 函数来自strings包
 
-`func Contains(s, substr string) bool`
+```
+func Contains(s, substr string) bool
+func ContainsAny(s, chars string) bool
+func HasPrefix(s, prefix string) bool
+func HasSuffix(s, suffix string) bool
+
+```
 如：
 ```
 fmt.Println(strings.Contains("hello golang","go"))
 //true
 ```
 
-`func Join(a []string, sep string) string`
+```
+//相等0， 大于1， 小于-1
+func Compare(a,b string) int
+
+//会忽略大小写
+func EqualFold(s, t string) bool
+
+```
+
+```
+func Split(s, sep string) []string
+func SplitN(s, sep string, n int) []string
+
+func Join(a []string, sep string) string
+```
+
+```
+//去除字符串两端指定字符
+func Trim(s , cutset string) string
+
+func TrimLeft(s, cutset string) string
+func TrimRight(s, cutset string) string
+func TrimSpace(s string) string
+func TrimPrefix(s, prefix string) string
+func TrimSuffix(s, suffix string) string
+
+```
+
 
 ### 数值类型和字符串类型之间的转换
 #### 数值类型转换字符串类型`strconv.Fromat***()`
@@ -168,6 +242,10 @@ fmt.Println(strings.Contains("hello golang","go"))
 strconv.FormatInt(int64(num),n)
 ```
 #### 字符串类型转数值类型`strconv.Parse***()`
+`num1, err := strconv.ParseInt(str1,10,8)`
+第一个参数：需要转换的数据
+第二个参数：转换为多少进制
+第三个参数：转换为多少位整型
 #### 字符串类型和整型快速转换
 
 整型转换为字符串`strconv.Itoa(int(num1))`
@@ -187,18 +265,53 @@ fmt.Sprintf("%t",num3)
 
 
 ### os包和flag包获取命令行参数
+```
+flag.****(*type, name, value, usage)
+第一个参数
+```
+`flag.StringVar(&name, "name","test","名字")`
 
-
-
+`flag.IntVar(&age, "age",11,"年龄")`
 `for...range`循环可以快速完成对字符串、数组、slice、map、channel遍历
 
 
-GO中引用类型有
+### GO中引用类型和值类型
+引用类型：指针，slice, map, channel
+值类型：int系列，float系列， bool, string, 数组，结构体
+
+
 
 
 ### 匿名函数以及闭包
 #### 匿名函数
+```
+//直接调用
+func(s string) {
+    fmt.Println(s)
 
+}("hello")
+
+//保存到变量
+f := func(s string) {
+    fmt.Println(s)
+}
+f("hello")
+
+//作为参数
+
+test(func(s string) {
+    fmt.Println(s)
+})
+
+func test(f func(s string)) {
+    f("hello go")
+
+}
+
+
+//作为返回值
+
+```
 
 #### 闭包
 
@@ -266,9 +379,49 @@ interface定义了一组方法，如果某个对象实现了某个接口的所�
 接口中嵌入接口时不能出现相同的方法名称
 
 空接口类型可以接收任意类型数据
+```
+var i interface{}
+i = 1
+
+i = 1.2
+
+i = map[string]string{"1":"2"}
+```
 
 只要是自定义类型就可以实现接口
 ```
+type usber interface {
+    start()
+    stop()
+
+}
+
+type Computer struct {
+    name  string
+    model string
+}
+
+func (cm Computer) start() {
+    fmt.Println("start computer")
+}
+
+func (cm Computer) stop() {
+    fmt.Println("stop computer")
+}
+
+func working(u usber) {
+    u.start()
+    u.stop()
+}
+
+func main() {
+    cm := Computer{"lenovo","123"}
+    working(cm)
+
+    var i usber
+    i = Computer{"mac","1234"}
+
+}
 
 ```
 
@@ -597,6 +750,12 @@ func main() {
 
 ### 方法
 1. golang中方法一般用于将函数和结构体绑定在一起，让结构体除了能够保存数据外还能具备某些行为
+2. 方法中的结构体，通函数形参一样使用
+```
+func (st *structname) funcname(params type) retype {
+
+}
+```
 
 
 
