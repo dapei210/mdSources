@@ -10,3 +10,7 @@ func EncodeToString(src []byte) string
 //将字符串s转化为slice
 func DecodeString(s string) ([]byte, error)
 ```
+
+
+
+
