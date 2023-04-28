@@ -38,7 +38,7 @@ network={
  radmin -d  /usr/local/etc/raddb  -e "debug level 4"
 
 #### radeapclient
-radeapclient -x 127.0.0.1 auth testing123 -f req.txt -m aaaaa -a 1 -d /usr/local/etc/raddb/
+/usr/local/bin/radeapclient -x 127.0.0.1 auth testing123 -f req.txt -m aaaaa -a 1 -d /usr/local/etc/raddb/
 
 -m: mid
 
