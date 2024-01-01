@@ -19,3 +19,39 @@
 
 #### openssl req
 
+## 证书
+### 证书类型
+证书有三种类型：X.509证书、PKCS#7证书、PKCS#12证书
+#### X.509证书
+X.509只包含公钥，没有私钥，这种证书一般公开发布，可用于放在客服端使用，用于加密、验签
+### 制作证书
+
+1. 生成RSA
+
+
+
+#### AD域服务器制作证书
+
+[AD服务器证书制作](https://zhuanlan.zhihu.com/p/558286846?utm_id=0)
+
+### CRL
+
+验证CRL
+
+```openssl crl -in crl.crl  -CAfile demoCA/cacert.pem -noout```
+
+PEM格式的CRL文件转换为DER格式
+
+```openssl crl -in crl.crl -outform DER -out crl.der```
+
+查看CRL信息
+
+```openssl crl -in crl.crl -text -issuer -hash -lastupdate -nextupdate```
+
+
+crl格式文件转为pem格式
+
+```openssl crl -in your_current.crl -inform DER -out crl.pem```
+
+```openssl crl -in crl.pem  -noout -text```
+
