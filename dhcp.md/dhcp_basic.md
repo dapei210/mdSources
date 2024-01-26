@@ -67,6 +67,7 @@ Option： 选项，不定长度。 DHCP报文中比较重要的字段。
 
 常用option字段如下：
 
+
 Option      名称         描述
 
 0       Pad  填充位
