@@ -5,7 +5,11 @@ https://www.cnblogs.com/websecyw/p/11232210.html
 
 https://blog.csdn.net/wy_97/article/details/87649262
 
+https://developer.aliyun.com/article/738246
+
 ## Kerberos概述
+Kerberos是由MIT研发的一种第三方网络身份认证协议，它提供了一种在不安全的网络环境中客户端/服务器模型下的各个实体安全地认证对方身份的协议-即客户和应用服务互相认证对方的身份。Kerberos一般使用共享密钥系统，但是需要一个可信的第三方，称为密钥分配中心KDC（Key Distribution Center）。它定义了客户/服务和第三方认证服务即密钥分配中心之间的安全认证交互过程
+
 Kerberos 是一种身份认证协议，被广泛运用在大数据生态中，甚至可以说是大数据身份认证的事实标准。
 Kerberos 是一种基于加密 Ticket 的身份认证协议。Kerberos 主要由三个部分组成：Key Distribution Center (即KDC)、Client 和 Service。
 ![KDC关系图](KDC关系图.jpg)
@@ -41,6 +45,7 @@ Key Distribution Center（即 KDC）, 是 Kerberos 的核心组件，主要由�
 3. Ticket Granting Service(TGS): 验证 TGT 与 Authenticator，为客户端提供 Service Tickets。
 
 ## 域认证 Kerberos 流程
+Kerberos网络身份认证协议主要定义了三个交互过程，即认证服务交互，票据授权服务交互，客户服务器交互
 ### Authentication Service Exchange 认证服务交换
 
 通过这步骤，AS 实现对 Client 身份的确认，并颁发给该 Client 一个 TGT 。具体过程如下：
@@ -111,6 +116,8 @@ Server 接收到 Request 之后，通过自己的 Master Key 解密 Ticket，从
 6. Kerberos 中信息加密方式一般是对称加密（可配置成非对称加密）
 
 ### 认证步骤
+![Kerberos身份认证过程](../nacproject/Kerberos身份认证过程.png)
+
 1. 客户端通过kinit USERNAME或其他方式，将客户端ID, 目标HTTP服务ID, 网络地址（可能是多个机器的IP地址列表，如果想在任何机器上使用，则可能为空），以及TGT有效期的寿命等信息发送给 Authentication Service。
 2. Authentication Server 将检查客户端ID是否在KDC数据库中。如果 Authentication Server 检查操作没有异常，那么KDC将随机生成一个 key，用于客户端与 Ticket Granting Service(TGS) 通信。这个Key，一般被称为 TGS Session Key。随后 Authentication Server 将发送两条信息给客户端。示意图如下：
    ![]
