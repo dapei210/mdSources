@@ -1,6 +1,19 @@
 https://www.cnblogs.com/zjlsafty/articles/14849636.html#_labelTop
+
+## Cookie
+如果你把 Cookies看成为 http协议的一个扩展的话，理解起来就容易的多了，其实本质上 cookies就是 http的一个扩展。有两个 http头部是专门负责设置以及发送 cookie的,它们分别是 Set-Cookie以及 Cookie。当服务器返回给客户端一个 http响应信息时，其中如果包含 Set-Cookie这个头部时，意思就是指示客户端建立一个 cookie，并且在后续的 http请求中自动发送这个 cookie到服务器端，直到这个 cookie过期。如果 cookie的生存时间是整个会话期间的话，那么浏览器会将 cookie保存在内存中，浏览器关闭时就会自动清除这个cookie。另外一种情况就是保存在客户端的硬盘中，浏览器关闭的话，该 cookie也不会被清除，下次打开浏览器访问对应网站时，这个 cookie就会自动再次发送到服务器端。一个 cookie的设置以及发送过程分为以下四步:
+1. 客户端发送一个 http请求到服务器端
+2. 服务器端发送一个 http响应到客户端，其中包含 Set-Cookie头部
+3. 客户端发送一个 http请求到服务器端，其中包含 Cookie头部
+4. 服务器端发送一个 http响应到客户端
+
+
 ## Session
+其实 session是一个存在服务器上的类似于一个散列表格的文件。里面存有我们需要的信息，在我们需要用的时候可以从里面取出来。类似于一个大号的map吧，里面的键存储的是用户的 sessionid，用户向服务器发送请求的时候会带上这个 sessionid,这时就可以从中取出对应的值了
+
+
 ### 基于Session的认证方式
+
 具体流程如下：
 1. 用户在客户端输入用户名和密码，进行登录操作
 2. 服务端用户身份验证通过，生成 Session，并存入数据库中
@@ -12,6 +25,17 @@ https://www.cnblogs.com/zjlsafty/articles/14849636.html#_labelTop
 1. **服务端成本上升**：每个用户在客户端进行登录操作后，服务端都需要进行一次 Session 记录，随着注册用户不断增多，存储 Session 就会占用大服务器内存，大型应用可能还需要借助数据库或者一系列缓存机制存储Session
 2. **无法横向扩展**: Session 认证方式在跨服务或跨域的资源共享方面表现很差。比如，多个子域名提供同一个应用服务，或者单点登录中用户通过一套用户名和密码同时登录多个应用系统，Session 认证方式在这样的场景中就无法再起作用，尤其是对于分布式应用而言，这种认证方式很难在多个服务器负载上进行横向拓展
 3. **CSRF跨站点请求伪造(Cross—Site Request Forgery)**: Cookies 存在很多不安全因素，如果 Cookies 被截获，用户就会很容易受到 CSRF 的攻击，导致数据泄露
+
+
+## Cookie和Session区别
+1. cookie数据存放在客户的浏览器上，session数据放在服务器上；
+2. cookie不是很安全，别人可以分析存放在本地的 COOKIE并进行 COOKIE欺骗，考虑到安全应当使用 session；
+3. session会在一定时间内保存在服务器上。当访问增多，会比较占用你服务器的性能。考虑到减轻服务器性能方面，应当使用 COOKIE；
+4. 单个 cookie在客户端的限制是 3K，就是说一个站点在客户端存放的 COOKIE不能超过 3K
+5. 所以个人建议：将登陆信息等重要信息存放为 SESSION；其他信息如果需要保留，可以放在 COOKIE中
+
+## Cookie和Session关联
+Cookie和 Session的方案虽然分别属于客户端和服务端，但是服务端的 session的实现对客户端的 cookie有依赖关系的，上面我讲到服务端执行 session机制时候会生成 session的 id值，这个 id值会发送给客户端，客户端每次请求都会把这个 id值放到 http请求的头部发送给服务端，而这个 id值在客户端会保存下来，保存的容器就是 cookie，因此当我们完全禁掉浏览器的 cookie的时候，服务端的 session也会不能正常使用
 
 ## Token
 Token认证是无状态的，其核心是签名和验签。

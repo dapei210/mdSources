@@ -36,6 +36,7 @@ X.509只包含公钥，没有私钥，这种证书一般公开发布，可用于
 
 ### CRL
 
+
 验证CRL
 
 ```openssl crl -in crl.crl  -CAfile demoCA/cacert.pem -noout```
@@ -55,3 +56,31 @@ crl格式文件转为pem格式
 
 ```openssl crl -in crl.pem  -noout -text```
 
+
+
+### OCSP
+认证请求证书
+
+```openssl ocsp -issuer cacert.pem -cert clicert.pem -text -url http://ocsp.digicert.com```
+
+如果
+
+
+
+### 使用OCSP, LDAP和HTTP进行证书检查
+
+当证书被吊销时，它会被添加到由CA或CA授权的证书吊销列表(CRL)中
+
+#### LDAP
+CA支持LDAP CRL发布
+
+#### HTTP
+使用web服务器发布CRL消息
+
+#### OCSP 
+LDAP和HTTP机制都是通过共享CRL消息工作，存在两个关键问题：
+1. CRL可能很大
+2. 实时快速响应
+
+OCSP通过C/S协议解决此类问题
+OCSP
