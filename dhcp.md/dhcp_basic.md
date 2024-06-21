@@ -45,6 +45,7 @@ Transaction ID：事务ID，随机数，有客户端生成，服务器Reply时�
 Secs： 距离第一次发射IP请求或Renew请求过去的秒数
 
 Flags：标志位，目前仅第一个bit有使用，置1 标明广播
+(通过discover或request报文通知dhcp server是通过单播方式还是广播方式通过DHCP offer或dhcp ack响应报文)
 
 Client IP Address：当前客户端的IP地址，如果当前客户端没有IP地址，则置0
 

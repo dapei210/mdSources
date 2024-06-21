@@ -81,8 +81,6 @@ DC(Domain Component):域名的部分，其格式将完整的域名分成几个�
 
 三者都是LDAP连接服务器端字符串的区分名DN(Distinguished Name),LDAP连接服务器的连接字符串格式为：ldap://servername/DN
 
-
-
 ### OpenLdap和AD
 Microsoft Active Directory（AD）是一种目录服务，可将用户和设备帐户数据存储在中央位置，用于基于 Windows 的网络、设备、应用程序和文件实现访问。
 
