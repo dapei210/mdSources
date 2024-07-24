@@ -56,3 +56,12 @@ zh
 
 
 SSO
+
+
+
+### Day one
+cmake语法学习，并下载visual studio
+
+c++学习
+
+
