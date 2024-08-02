@@ -1,3 +1,7 @@
+## 认证协议
+OIDC	CAS	OAuth2	SAML	
+
+
 ## OIDC(OpenID Connect)
 OpenID Connect (OIDC) 扩展了 OAuth 2.0 授权协议，使其也可用作身份验证协议。 可以使用 OIDC 通过一个称作“ID 令牌”的安全令牌在支持 OAuth 的应用程序之间启用单一登录 (SSO)
 
@@ -30,6 +34,14 @@ OpenID Connect (OIDC) 扩展了 OAuth 2.0 授权协议，使其也可用作身�
 
 
 ### 概念
+
+#### OIDC授权码模式
+通过应用和OP之间交互获取用户信息
+![OIDC授权码模式](OIDC---授权码模式.png)
+
+OIDC Provider对外暴露接口
+
+#### 授权接口
 #### ID_Token
 OIDC对OAuth2最主要的扩展就是提供了ID Token。
 ID Token是一个安全令牌，是一个授权服务器提供的包含用户信息（由一组Cliams构成以及其他辅助的Cliams）的JWT格式的数据结构

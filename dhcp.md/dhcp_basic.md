@@ -18,10 +18,9 @@ __DHCP Request__
 DHCP客户端可能会收到很多Offer应答报文，所以必须在这些应答中选择一个。通常是选择第一个Offer应答报文的服务器作为自己的目标服务器，并向该服务器发送一个广播的Request请求报文，通告选择的服务器，希望获得所分配的IP地址。另外，DHCP客户端在成功获取IP地址后，在地址使用租期达到50%时，会向DHCP服务器发送单播Request请求报文请求续延租约，如果没有收到ACK报文，在租期达到87.5%时，会再次发送广播的Request请求报文以请求续延租约。
 
 __DHCP ACK__
-DHCP服务器收到Request请求报文后，根据Request报文中携带的用户MAC来查找有没有相应的租约记录，如果有则发送ACK应答报文，通知用户可以使用分配的IP地址
-客户端在收到服务器返回的DHCP_ACK确认报文后，会以广播的方式发送免费ARP报文(该报文中，源IP地址和目标IP地址都是本机IP地址，源MAC地址是本机MAC地址，目的
-MAC地址是广播MAC地址)，探测是否有主机使用服务器分配的IP地址，如果在规定的时间内没有收到响应，才使用此地址。否则，客户端回发送DHCP_DECLINE报文给DHCP
-服务器，并重新申请IP地址。
+
+DHCP服务器收到Request请求报文后，根据Request报文中携带的用户MAC来查找有没有相应的租约记录，如果有则发送ACK应答报文，通知用户可以使用分配的IP地址。
+客户端在收到服务器返回的DHCP_ACK确认报文后，会以广播的方式发送免费ARP报文(该报文中，源IP地址和目标IP地址都是本机IP地址，源MAC地址是本机MAC地址，目的MAC地址是广播MAC地址)，探测是否有主机使用服务器分配的IP地址，如果在规定的时间内没有收到响应，才使用此地址。否则，客户端回发送DHCP_DECLINE报文给DHCP服务器，并重新申请IP地址。
 
 __DHCP NACK__
 
@@ -51,6 +50,7 @@ Transaction ID：事务ID，随机数，有客户端生成，服务器Reply时�
 Secs： 距离第一次发射IP请求或Renew请求过去的秒数
 
 Flags：标志位，目前仅第一个bit有使用，置1 标明广播
+(通过discover或request报文通知dhcp server是通过单播方式还是广播方式通过DHCP offer或dhcp ack响应报文)
 
 Client IP Address：当前客户端的IP地址，如果当前客户端没有IP地址，则置0
 
@@ -71,6 +71,7 @@ Option： 选项，不定长度。 DHCP报文中比较重要的字段。
 如果Opiton有值，即Opiton是以下name-value对，则Opiton需要多个字节表示，其中第一个字节表示 option的名字，第二字节表示value的长度，第三个字节开始表示value。
 
 常用option字段如下：
+
 
 Option      名称         描述
 
