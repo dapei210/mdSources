@@ -272,3 +272,8 @@ PEM文件的后缀可以是： .crt, .pem , .cer, .key
 
 
 
+测试服务器是否支持某种密码套件
+openssl s_client -cipher "ECDHE-SM2-WITH-SMS4-SM3" -connect sm2test.ovssl.cn:443 -tls1_2 -servername sm2test.ovssl.cn
+
+
+
