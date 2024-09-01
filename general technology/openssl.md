@@ -82,13 +82,16 @@ DH 密钥交换过程中，即使第三方截获了 TLS 握手阶段传递的公
 
 ### PKCS＃12
 
-
-
 ### 常用命令
 
 
 #### openssl genrsa
-用来生成RSA私钥，不会生成公钥，因为公钥提取自私钥，生成时可以指定私钥长度和密码保护
+用来生成RSA私钥，不会生成公钥，因为公钥提取自私钥（即可以通过私钥获取公钥），生成时可以指定私钥长度和密码保护
+
+`openssl genpkey -algorithm rsa -out rsa_private.key` //生成rsa私钥
+
+`openssl -in rsa_private.key -out public rsa_pub.key` //生成rsa公钥
+
 
 #### openssl req
 
@@ -107,7 +110,27 @@ PEM文件的后缀可以是：.crt, .pem, .cer, and .key
 
 `openssl x509 -in *.pem -noout -text`  显示可读的明文
 
-`openssl x509 -outform der -in *.pem -out *.der`  PEM文件转换为DER文件
+`openssl x509 -outform der -in *.pem -out *.der`  PEM或CER文件转换为DER文件
+
+`openssl x509 -in *.der -inform DER -outform PEM -out *.pem`  转换DER文件为PEM或CER文件
+
+`openssl x509 -inform der -in *.der -noout -text` 将der文件显示可读明文
+
+
+通过公钥和私钥进行加解密
+
+公钥加密，私钥解密
+
+1. `echo "just a test" >text`
+2. `openssl rsautl -encrypt -in text -inkey rsa_pub.key -pubin -out text.en` //采用公钥对文件进行加密
+3. `openssl rsautl -decrypt -in text.en -inkey rsa_private.key` //采用私钥解密文件
+
+
+私钥加密，公钥解密，其中私钥加密使用-sign选项，公钥解密使用-verify
+
+1. `openssl rsautl -sign -in text -inkey rsa_private.key -out text.en` //用私钥对文件进行加密(签名)
+
+2. `openssl rsautl -verify -in text.en -inkey rsa_pub.key -pubin`  //用公钥对文件进行解密(校验)
 
 可以将PEM文件转为PKCS#7文件，后缀为p7b
 1. PKCS#7文件是含有多个证书，形成证书链。
