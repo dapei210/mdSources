@@ -102,3 +102,9 @@ set (Tutorial_VERSION_MINOR 0)
 option (USE_MYMATH
         "Use tutorial provided math implementation" ON)
 ```
+
+
+include指令
+
+.cmake文件是一个模块文件，可以被include到CMakeLists.txt中
+include指令一般用于语句的复用，也就是说，如果有一些语句需要在很多CMakeLists.txt文件中使用，为避免重复编写，可以将其写在.cmake文件中，然后在需要的CMakeLists.txt文件中进行include操作就行了
