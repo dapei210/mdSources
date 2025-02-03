@@ -115,3 +115,41 @@ const static数据成员在类的定义体中初始化时，该数据成员仍�
 
 
 
+### c++11 for循环
+
+如果要在循环中修改数组或容器中的元素，可以使用引用类型
+、、、
+std::vector<int> iv(3);
+for (auto &v : iv)
+{
+    v = std::rand();
+}
+、、、
+
+
+所有容器的共通操作
+
+1. == 和 != 运算符，返回true或false
+
+2. = 将某个容器赋值给另一个容器
+
+3. empty(), size(), clear()
+
+4. begin(), end()
+
+5. insert(), erase()
+
+
+### deque
+同vector相似，连续内存存储元素，对于最前端以及最后端元素的插入和删除操作，效率较高
+
+push_back()和pop_back()会在末端插入和删除一个元素，push_front()和pop_front()在最前端插入和删除一个元素；pop_back()和pop_front()并不会获取元素的值，要想获取末端和最前端的元素的值，是用back()和front()函数
+
+
+如果有必要为某个class编写copy constructor，那么同样有必要为它编写copy assignment operator
+
+const对象和非const对象的调用规则
+
+const对象只能调用const成员函数，不能调用非const成员函数。这是因为const对象的this指针是const类型的，无法传递给非const成员函数
+
+非const对象可以调用const成员函数和非const成员函数。这是因为非const对象的this指针可以传递给任何类型的成员函数
