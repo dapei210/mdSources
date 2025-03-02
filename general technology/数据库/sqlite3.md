@@ -13,6 +13,18 @@
 
 1. sqlite3 test.db < test.sql
 
+将数据库表导出和导入
+
+如果只想导出特定表格的数据，可以使用SQLite3的.output和.dump命令的结合， 首先进入终端会话
+
+1. .output dumpfile.sql   将输出模式设置为将结果写入dumpfile.sql文件中
+2. .dump table1 table2   将table1和table2导出到dumpfile.sql
+3. .exit 结束会话
+
+导入
+
+1. .read dumpfile.sql
+
 #### 查看表信息
 
 1. 显示表头：.header on来开启表头的显示
